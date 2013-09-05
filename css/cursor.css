@@ -1,0 +1,26 @@
+.cursor
+{
+	animation: myfirst 0.75s infinite;
+	-webkit-animation: myfirst 0.75s infinite; /* Safari and Chrome */
+}
+
+@keyframes myfirst
+{
+0%   {background: gray;}
+50% {background: lightgray;}
+100% {background: gray;}
+}
+
+@-webkit-keyframes myfirst /* Safari and Chrome */
+{
+0%   {background: gray;}
+50% {background: lightgray;}
+100% {background: gray;}
+}
+
+@-webkit-keyframes mysecond /* Safari and Chrome */
+{
+0%   {color: white;}
+50% {color: gray;}
+100% {color: white;}
+}

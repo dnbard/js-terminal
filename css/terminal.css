@@ -1,0 +1,19 @@
+#terminal{
+	margin: auto;
+	text-align: center;
+}
+
+#terminal .row{
+	width:100%;
+	overflow:hidden;
+}
+
+#terminal .cell{
+	float:left;
+	color: black;
+	transition: all 0.25s ease;		
+}
+
+#terminal .cell:hover{
+	background: red;
+};

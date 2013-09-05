@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html ng-app>
+  <head>
+  	<link rel="stylesheet" type="text/css" href="css/terminal.css">
+  	<link rel="stylesheet" type="text/css" href="css/cursor.css">
+    <script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
+    <script src="js/terminal.js"></script>
+    <script src="js/cursor.js"></script>
+  </head>
+  <body>
+  	<div id='terminal'>
+  	</div>
+  	<script>
+  		controller = new Terminal('#terminal', 
+  			{
+  				cols: 80, 
+  				rows: 25,
+  				width: 12,
+  				height: 22
+  			});
+
+  		cursor = new Cursor(controller, {x:0, y:0});
+  	</script>
+  </body>
+</html>
