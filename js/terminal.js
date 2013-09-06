@@ -72,6 +72,24 @@ var Terminal = function (elem, size){
 			this.cells[i].text('');
 	};
 
+	this.write = function(string, position){
+		for ( var i = 0; i < string.length; i++ ){
+			var char = string.charAt(i);
+			this.putChar(position, char);
+
+			position.x += 1;
+			if (position.x >= this.size.cols){
+				position.x = 0;
+				position.y ++;
+				if (position.y >= this.size.rows){				
+					this.lineUp();
+					position.y-=2;
+				}
+			}
+		}
+		return position;
+	};
+
 	this.writeLine = function(string){
 		var position = {x:0, y:0};
 		if (this.cursor) position = this.cursor.position;
