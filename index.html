@@ -7,6 +7,9 @@
     <script src="js/terminal.js"></script>
     <script src="js/cell.js"></script>
     <script src="js/cursor.js"></script>
+    <script src="js/game/gamemain.js"></script>
+    <script src="js/game/components/BaseComponent.js"></script>
+    <script src="js/game/stages/BaseStage.js"></script>
   </head>
   <body>
   	<div id='terminal'>
@@ -19,11 +22,9 @@
   				width: 12,
   				height: 22
   			});
+  		//terminal.cursor = new Cursor(terminal, {x:0, y:0});
 
-  		terminal.cursor = new Cursor(terminal, {x:0, y:0});
-      terminal.writeLine('Terminal started');
-      
-      //setInterval(function(){terminal.writeLine(" ")}, 150);
-  	</script>
+      game = new GameMain();
+    </script>
   </body>
 </html>
