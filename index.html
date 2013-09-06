@@ -5,13 +5,14 @@
   	<link rel="stylesheet" type="text/css" href="css/cursor.css">
     <script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
     <script src="js/terminal.js"></script>
+    <script src="js/cell.js"></script>
     <script src="js/cursor.js"></script>
   </head>
   <body>
   	<div id='terminal'>
   	</div>
   	<script>
-  		controller = new Terminal('#terminal', 
+  		terminal = new Terminal('#terminal', 
   			{
   				cols: 80, 
   				rows: 25,
@@ -19,7 +20,10 @@
   				height: 22
   			});
 
-  		cursor = new Cursor(controller, {x:0, y:0});
+  		terminal.cursor = new Cursor(terminal, {x:0, y:0});
+      terminal.writeLine('Terminal started');
+      
+      //setInterval(function(){terminal.writeLine(" ")}, 150);
   	</script>
   </body>
 </html>

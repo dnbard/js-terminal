@@ -8,22 +8,30 @@ var Cursor = function(terminal, position){
 	this.prev = 0;
 
 	this.moveTo = function(position){
+		if (!position) position = this.position;
 		if (this.elem != null) this.elem.removeClass('cursor');
 		this.position = position;
 		this.elem = terminal.cells[position.x + position.y * terminal.size.cols];
 		this.elem.addClass('cursor');
 	};
 
-
-
- 	$(document).keydown(function(event){
- 		var key = event.which || event.keyCode;
+	$(document).keyup(function(event){
+		var key = event.which || event.keyCode;
 		switch (key){
  			case 16: //SHIFT
- 				this.pressed.shift = true;
+ 				this.pressed.shift = false;
+ 			break;
+ 			case 17: //CTRL
+ 				this.pressed.ctrl = false;
+ 			break;
+ 			case 18: //ALT
+ 				this.pressed.alt = false;
  			break;
  		}
+	}.bind(this));
 
+ 	$(document).keydown(function(event){		
+ 		var key = event.which || event.keyCode;
  		if (!this.mult) {
         	this.mult = true;
         	this.prev = key;
@@ -56,24 +64,36 @@ var Cursor = function(terminal, position){
 			case 13: //ENTER
 				sender.position.x = 0;
 				sender.position.y += 1;
-				sender.moveTo(sender.position);
+
+				if (sender.position.y >= terminal.size.rows){
+					terminal.lineUp();
+				}
+
+				sender.moveTo(sender.position);				
 			break;
 
 			case 8: //BACKSPACE 
-				if (sender.position.x > 0) {
-					sender.position.x -= 1;
-					terminal.clearChar(sender.position);
-				}
-				else if (sender.position.x <= 0 && sender.position.y > 0){
-					sender.position.y -= 1;
+				if (!sender.pressed.shift) {
+					if (sender.position.x > 0) {
+						sender.position.x -= 1;
+						terminal.clearChar(sender.position);
+					}
+					else if (sender.position.x <= 0 && sender.position.y > 0){
+						sender.position.y -= 1;
 
-					var prevRowWidth = terminal.getRowWidth(sender.position.y);
-					if (prevRowWidth == terminal.size.cols) prevRowWidth --;
-					sender.position.x = prevRowWidth;					
-					terminal.clearChar(sender.position);
-				} 
+						var prevRowWidth = terminal.getRowWidth(sender.position.y);
+						if (prevRowWidth == terminal.size.cols) prevRowWidth --;
+						sender.position.x = prevRowWidth;					
+						terminal.clearChar(sender.position);
+					} 
 				
-				sender.moveTo(sender.position);
+					sender.moveTo(sender.position);
+				}
+				else { //shift is pressed 
+					terminal.deleteRow(sender.position.y);
+					sender.position.x = 0;
+					sender.moveTo(sender.position);
+				}
 			break;
 
 			case 37: //LEFT
@@ -101,8 +121,16 @@ var Cursor = function(terminal, position){
 			break;
 
 			case 16: //SHIFT
-				this.pressed.shift = false;
+				this.pressed.shift = true;
 			break;
+
+			case 17: //CTRL
+ 				this.pressed.ctrl = true;
+ 			break;
+
+ 			case 18: //ALT
+ 				this.pressed.alt = true;
+ 			break;
 
 			default: 
 				if (key == '') break;
@@ -116,6 +144,15 @@ var Cursor = function(terminal, position){
 			break;
 		};		
 	};
+
+	this.skipToNextLine = function(){
+		this.position.y ++;
+		this.position.x = 0;
+		if (this.position.y >= this.terminal.size.rows){
+			this.position.y --;
+			this.terminal.lineUp();
+		}		
+	}
 
  	this.moveTo(position);
 }
